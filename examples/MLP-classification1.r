@@ -11,8 +11,7 @@ trainRowNumbers <- createDataPartition(dataset$Species, p=0.8, list=FALSE)
 trainData <- dataset[trainRowNumbers,]
 testData <- dataset[-trainRowNumbers,]
 
-# Train using a neural network (SLP) with 3 neurons, no weight decay,
-# and K-fold cross-validation (K=10) as training control
+# Train a MLP with 1 layers with 3 neurons
 model <- train(form=Species ~ .,       # outcome ~ predictors
                data=trainData,
                method='nnet',

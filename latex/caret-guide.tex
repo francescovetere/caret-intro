@@ -39,8 +39,8 @@
 %     linkcolor=blue,  %choose some color if you want links to stand out
 % }
 
-\setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
+% \setcounter{secnumdepth}{5}
+% \setcounter{tocdepth}{5}
 
 \setlength{\parindent}{0in}
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
@@ -66,7 +66,8 @@
 \end{titlepage}
 
 \tableofcontents
-% \pagebreak
+
+\pagebreak
 
 \section{Introduction}
 Caret (short for \textbf{C}lassification \textbf{A}nd \textbf{RE}gression \textbf{T}raining) is a comprehensive framework for building machine learning models in R.\\
@@ -77,17 +78,18 @@ It is open-source, provides many statistical techniques (such as statistical tes
 Sometimes the syntax and the way to implement ML algorithms differ across packages: \textbf{Caret} is an R package that provides a uniform interface to the various existing modeling functions.\\
 In particular, it offers tools for data splitting, data pre-processing, model creation and tuning, and many more.\\
 
-The aim of this paper is to introduce the developer to the Caret package: starting from the installation process, it will be then shown how to use Caret to build machine learning models, focusing in particular on Multi-Layer Perceptron.\\
-Finally, some practical examples will be presented.\\
+The aim of this paper is to introduce the developer to the Caret package: starting from the installation process, it will be then shown how to use Caret to build machine learning models.\\
+Finally, some practical examples of Multi-Layer Perceptrons will be presented.\\
 
 \pagebreak
 
 \section{Installation and prerequisites}
+\subsection{R}
 R is a multi-platform environment, available for various OS.\\
 In this paper, the installation process will be shown for Ubuntu 20.04 LTS\\
 (however, it is very similar for other Linux distros).\\
 
-Precompiled binaries of R are available for various OS on \textbf{CRAN} \href{https://cloud.r-project.org/}{\texttt{(https://cloud.r-project.org/)}}, a network of ftp and web servers around the world that store identical, up-to-date, versions of code and documentation for R.\\
+Precompiled binaries of R are available for various OS on \textbf{CRAN} \href{https://cloud.r-project.org/}{\texttt{(https://cloud.r-project.org/)}}, a network of ftp and web servers around the world that stores identical, up-to-date, versions of code and documentation for R.\\
 
 However, with Ubuntu it is also possible to install it directly from terminal with \texttt{sudo}, or as a root user:\\
 
@@ -106,10 +108,13 @@ However, with Ubuntu it is also possible to install it directly from terminal wi
 
   # install R and its dependencies
   apt install --no-install-recommends r-base
+
 \end{lstlisting}
 
+\vspace{3mm}
 Now, R and its dependecies are installed: typing the command \texttt{R} in the terminal will launch the R interpreter.\\
 
+\subsection{RStudio}
 In order to write R code, a very popular IDE is \textbf{RStudio}, available for many platforms \href{https://www.rstudio.com/products/rstudio/download/}{\texttt{(https://www.rstudio.com/products/rstudio/download/)}}.
 \\
 
@@ -122,6 +127,7 @@ Once the correct version of the software has been chosen, a \texttt{.deb} packag
 
 \pagebreak
 
+\subsection{Caret}
 In order to install the Caret package, it's sufficient to open RStudio (or directly the R interpeter) and execute the following line of code:\\
 
 \begin{lstlisting}
@@ -135,6 +141,8 @@ Once the process is ended, Caret is ready to be included in a normal R program w
 \begin{lstlisting}
   library('caret')
 \end{lstlisting}
+
+\pagebreak
 
 \section{Core elements of Caret}
 \subsection{Data preprocessing}
@@ -157,9 +165,10 @@ In order to do this, Caret offers a handy \texttt{createDataPartition} function.
 
 \textbf{Arguments}\\
 
-\texttt{y}: a vector of outcomes\\
-\texttt{times}: the number of partitions to create\\
-\texttt{p}: the percentage of data that goes to training\\
+\texttt{y}: a vector of outcomes, useful because it allows Caret to preserve\\
+\phantom{....}the proportion of the categories specified in this parameter.\\
+\texttt{times}: the number of partitions to create.\\
+\texttt{p}: the percentage of data that goes to training.\\
 \texttt{list}: TRUE if the results should be in a list;\\
 \phantom{.........} FALSE if the results should be in a matrix of dimensions\\
 \phantom{.........} \texttt{[floor(p * length(y)), times]}\\
@@ -167,6 +176,8 @@ In order to do this, Caret offers a handy \texttt{createDataPartition} function.
 \textbf{Return value}\\
 
 A list or matrix of row position integers corresponding to the training data.\\
+
+\pagebreak
 
 \textbf{Example}\\
 \begin{lstlisting}
@@ -194,7 +205,7 @@ print(nrow(testData))     # 30
 \end{lstlisting}
 
 \subsubsection{preProcess()}
-Often some kind of data transformation can be useful (i.e.: normalization).\\
+Often some kind of preprocessing over our dataset can be useful, like normalization or standardization.\\
 Caret make this process easy, providing the \texttt{preProcess} function.\\
 
 \textbf{Syntax}
@@ -208,7 +219,7 @@ Caret make this process easy, providing the \texttt{preProcess} function.\\
 
 \textbf{Arguments}\\
 
-\texttt{x}: a matrix or data frame\\
+\texttt{x}: a matrix or data frame.\\
 \texttt{method}: a character vector specifying the type of processing. \\
 \phantom{..............} Possible values are:\\
 \phantom{..............} "range": Normalize values so it ranges between 0 and 1\\
@@ -218,6 +229,7 @@ Caret make this process easy, providing the \texttt{preProcess} function.\\
 ...\\
 
 \textbf{Return value}\\
+
 A list of various statistics, which will be transormed in the desired data frame calling the \texttt{predict} function, as shown in the example below.\\
 
 \textbf{Example}\\
@@ -233,16 +245,18 @@ print("after\n")
 print(head(dataset))
 \end{lstlisting}
 
+\pagebreak
+
 \subsection{Model training and tuning}
 \subsubsection{train()}
 Once data are ready, the next step is to build the machine learning model, choosing its hyperparameters and its training control strategies.\\
 
 Caret provides a huge list of possible models, currently 238.\\
-\href{https://topepo.github.io/caret/available-models.html}{(https://topepo.github.io/caret/available-models.html)}.\\
+See \href{https://topepo.github.io/caret/available-models.html}{\texttt{https://topepo.github.io/caret/available-models.html}} for further details.\\
 
-Each model may be implemented using a different backend library, but Caret's interface remains the same (that's the big advantage).\\
+Each model may be implemented using a different backend library, but Caret's interface remains the same, simplifying the developer's work.\\
 
-In particular, Caret provides a \texttt{train} function, that performs all the necessary work in order to train and tune a specific model, that can be used transparently both for regression and classification tasks.\\ 
+In particular, Caret provides a \texttt{train} function that performs all the necessary work in order to train and tune a specific model, that can be used transparently both for regression and classification tasks.\\ 
 
 \textbf{Syntax}
 \begin{verbatim}
@@ -255,15 +269,17 @@ In particular, Caret provides a \texttt{train} function, that performs all the n
        )
 \end{verbatim}
 
+\pagebreak
+
 \textbf{Arguments}\\
 
 \texttt{form}: A formula of the form \texttt{y $\sim$  x1 + x2 + ...} for dividing outcome from \phantom{..........}
-predictors\\
+predictors.\\
 \texttt{data}: Data frame from which variables specified in \texttt{form} are taken.\\
 \texttt{method}: A string specifying which classification or regression model to use.\\
 \phantom{..............}Possible values are found using \texttt{names(getModelInfo())}\\
 \texttt{trControl}: A function defining the training control strategy.\\
-\texttt{tuneGrid}: A data frame with possible tuning values for the chosen \texttt{method}.\\
+\texttt{tuneGrid}: A data frame that specifies the tuning values for the chosen \texttt{method}.\\
 ...\\
 
 \textbf{Return value}\\
@@ -281,6 +297,8 @@ model <- train(form=Species ~ .,       # outcome ~ predictors
                 tuneGrid=expand.grid(size=3,decay=0),
                 trace=FALSE)           # avoids verbose output 
 \end{lstlisting}
+
+\pagebreak
 
 \subsection{Predictions and evaluations}
 
@@ -300,7 +318,7 @@ This is done by \texttt{predict} function.\\
 
 \textbf{Arguments}\\
 
-\texttt{object}: A model created with \texttt{train}\\
+\texttt{object}: A model created with \texttt{train}.\\
 \texttt{newdata}: An optional set of data to predict on.\\
 \phantom{................}If NULL, then the original training data are used.\\
 \texttt{type}: either "raw" or "prob", for the number/class predictions \\
@@ -317,6 +335,8 @@ A vector of predictions if \texttt{type} = "raw", or a data frame of class proba
 # Predict "Species" attribute for data in testData using the model trained before
 prediction <- predict(model, testData[-5])
 \end{lstlisting}
+
+\pagebreak
 
 \subsubsection{confusionMatrix()}
 Once the predictions are made, it is possible to compare the predictions versus the actual data, generating also some evaluation metrics.\\
@@ -353,13 +373,19 @@ A list containing the table representing the confusion matrix and the various ev
   print(cm)
 \end{lstlisting}
 
-\section{Examples of MLPs}
+\pagebreak
+
+\section{Examples}
 In this final section, some complete examples of MLPs are presented.\\
+Caret offers various models in order to build MLPs, such as \texttt{'nnet'}, \texttt{'mlp'}, \texttt{'mlpML'}, \texttt{'mlpKerasDropout'}, \texttt{'mlpKerasDropoutCost'} and many more.\\
 
-\subsection{SLP}
-In this first example, the objective is to perform a classification task over the iris dataset, using a Single Layer Perceptron with 3 neurons.\\
+Each of them provides a different set of tuning parameters that need to be assigned in the \texttt{tuneGrid} parameter of the \texttt{train} function.\\
 
-\lstinputlisting{"../examples/SLP.r"}
+\subsection{Classification with MLP (1 layer)}
+In this first example, the objective is to perform a classification task over the famous iris dataset, using a Multi-Layer Perceptron with a single layer of 3 neurons.\\
+For this task, the \texttt{nnet} model is used.\\
+
+\lstinputlisting{"../examples/MLP-classification1.r"}
 
 \pagebreak
 
@@ -396,4 +422,52 @@ Specificity                      1.0000                 1.0000                0.
 
 \end{lstlisting}
 
+\pagebreak
+
+\subsection{Classification with MLP (3 layers)}
+In this example, we want to adapt the previous problem using a 3-layers MLP.\\
+
+This can be done using the \texttt{mlpML} model, which allows to specify up to 3 layers as tuning parameters.\\
+
+\lstinputlisting{"../examples/MLP-classification2.r"}
+
+\vspace{5mm}
+
+Other models like \texttt{mlpSGD} provide also more sophisticated tuning parameters, like \texttt{learn\_rate} and \texttt{momentum}.\\
+
+\pagebreak
+
+\subsection{Regression with MLP}
+In this final example, the task is to predict the value of a potential car sale (i.e. how much a particular person will spend on buying a car) for a customer on the basis of the following attributes: age, gender, average miles driven per day, personal debt, monthly income.\\
+
+This can be done for example using a \texttt{mlp} model, specifying \texttt{RMSE} as the chosen metric.\\
+
+\lstinputlisting{"../examples/MLP-regression.r"}
+
+\pagebreak
+
+This is the output generated, from which we can observe that the 192 test istances have been predicted with a final RMSE of 9296.64.\\
+
+\begin{lstlisting}
+  6           16           19           25           27           
+  8.551736e+03 1.946015e+04 8.551736e+03 1.605100e+04 1.946015e+04 
+
+  ...
+
+  920          929          944          952          955 
+  8.551736e+03 1.090841e+04 1.605100e+04 8.551736e+03 2.460274e+04 
+
+  Multi-Layer Perceptron 
+  
+  963 samples
+    5 predictor
+  
+  Pre-processing: centered (5), scaled (5) 
+  Resampling: Cross-Validated (3 fold, repeated 3 times) 
+  Summary of sample sizes: 642, 643, 641, 642, 642, 642, ... 
+  Resampling results:
+  
+    RMSE      Rsquared   MAE     
+    9296.637  0.2369883  7287.627
+\end{lstlisting}
 \end{document}
