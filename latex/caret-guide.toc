@@ -1,0 +1,19 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {section}{\numberline {2}Installation and prerequisites}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}R}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}RStudio}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Caret}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Core elements of Caret}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Data preprocessing}{5}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}createDataPartition()}{5}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}preProcess()}{6}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Model training and tuning}{8}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}train()}{8}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Predictions and evaluations}{10}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}predict()}{10}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}confusionMatrix()}{11}{subsubsection.3.3.2}%
+\contentsline {section}{\numberline {4}Examples}{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Classification with MLP (1 layer)}{13}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Classification with MLP (3 layers)}{15}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Regression with MLP}{17}{subsection.4.3}%
+\contentsline {section}{References}{20}{section*.2}%

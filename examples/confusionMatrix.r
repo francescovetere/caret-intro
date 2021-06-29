@@ -22,7 +22,7 @@ model <- train(form=Species ~ .,       # outcome ~ predictors
 
 # Predict "Species" attribute for data in testData using the model trained before
 prediction <- predict(model, testData[-5])
-print(prediction)  # 30 predictions are made, because nrow(testData) = 30
+#print(prediction)  # 30 predictions are made, because nrow(testData) = 30
 
 # Create a confusion matrix with all possible evaluation metrics
 cm <- confusionMatrix(reference = as.factor(testData$Species), data = prediction, mode='everything')

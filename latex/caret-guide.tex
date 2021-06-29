@@ -76,7 +76,7 @@
 Caret (short for \textbf{C}lassification \textbf{A}nd \textbf{RE}gression \textbf{T}raining) is a comprehensive framework for building machine learning models in R.\\
 
 \textbf{R} is a language and environment for statistical computing and graphics, widely used in AI and ML applications.\\
-It is open-source, provides many statistical techniques (such as statistical tests, classification, clustering, ...), and has many packages that can be used to solve different problems.\\
+It is open-source, provides many statistical techniques (such as tests, classification, clustering, etc.), and has many packages that can be used to solve different problems.\\
 
 Sometimes the syntax and the way to implement ML algorithms differ across packages: \textbf{Caret} is an R package that provides a uniform interface to the various existing modeling functions.\\
 In particular, it offers tools for data splitting, data pre-processing, model creation and tuning, and many more.\\
@@ -378,6 +378,39 @@ A list containing the table representing the confusion matrix and the various ev
 
 \pagebreak
 
+Looking at the output generated, we can observe that not only a confusion matrix has been generated, but also some relevant statistics.\\
+
+From the confusion matrix, we can observe how exactly 1 instance of Iris-virignica has been misclassified as Iris-versicolor.\\
+This led to a global accuracy of 96.67\%.\\
+
+Also, for each class some separate metrics are computed, such as sensitivity, specificity, precision, recall, etc.\\
+
+\begin{lstlisting}
+  Confusion Matrix and Statistics
+
+                  Reference
+Prediction        Iris-setosa Iris-versicolor Iris-virginica
+  Iris-setosa              10               0              0
+  Iris-versicolor           0               9              0
+  Iris-virginica            0               1             10
+
+Overall Statistics
+                           
+  Accuracy : 0.9667          
+  ...            
+
+Statistics by Class:
+
+                      Class: Iris-setosa Class: Iris-versicolor Class: Iris-virginica
+  Sensitivity                      1.0000                 0.9000                1.0000
+  Specificity                      1.0000                 1.0000                0.9500
+  Precision                        1.0000                 1.0000                0.9091
+  Recall                           1.0000                 0.9000                1.0000
+  ...
+\end{lstlisting}
+
+\pagebreak
+
 \section{Examples}
 In this final section, some complete examples of MLPs are presented.\\
 Caret offers various models in order to build MLPs, such as \texttt{'nnet'}, \texttt{'mlp'}, \texttt{'mlpML'}, \texttt{'mlpKerasDropout'}, \texttt{'mlpKerasDropoutCost'} and many more.\\
@@ -393,6 +426,10 @@ For this task, the \texttt{nnet} model is used.\\
 \pagebreak
 
 This is the output generated, from which we can observe that the 30 test istances have been classified with an accuracy of 96.67\%.\\
+
+Looking at the confusion matrix, we note that only 1 instance has been misclassified.\\
+
+Of course, a lot of metrics have been generated because we selected \texttt{'everything'} as value for the \texttt{mode} parameter of the confusion matrix.\\
 
 \begin{lstlisting}
  [1] Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa    
@@ -430,13 +467,47 @@ Specificity                      1.0000                 1.0000                0.
 \subsection{Classification with MLP (3 layers)}
 In this example, we want to adapt the previous problem using a 3-layers MLP.\\
 
-This can be done using the \texttt{mlpML} model, which allows to specify up to 3 layers as tuning parameters.\\
+This can be done using the \texttt{mlpML} model, which allows to specify up to 3 layers as tuning parameters (other models like \texttt{mlpSGD} provide also more sophisticated tuning parameters, such as \texttt{learn\_rate} and \texttt{momentum}).\\
 
 \lstinputlisting{"../examples/MLP-classification2.r"}
 
-\vspace{5mm}
+\pagebreak
 
-Other models like \texttt{mlpSGD} provide also more sophisticated tuning parameters, like \texttt{learn\_rate} and \texttt{momentum}.\\
+This is the output generated, from which we can observe that we obtained an accuracy of 56.67\%.\\
+
+This accuracy, much lower than the one we obtained with a simpler MLP, indicates that this model is not so adequate for the task: it is too complex, and thus it overfits data.\\
+
+Moreover, not only accuracy is worse, but almost every other computed metric.\\
+
+\begin{lstlisting}
+  [1] Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa     Iris-setosa    
+  [8] Iris-setosa     Iris-setosa     Iris-setosa     Iris-versicolor Iris-versicolor Iris-setosa     Iris-versicolor
+ [15] Iris-versicolor Iris-setosa     Iris-setosa     Iris-versicolor Iris-versicolor Iris-versicolor Iris-versicolor
+ [22] Iris-versicolor Iris-versicolor Iris-versicolor Iris-versicolor Iris-versicolor Iris-versicolor Iris-versicolor
+ [29] Iris-versicolor Iris-versicolor
+
+ Levels: Iris-setosa Iris-versicolor Iris-virginica
+
+ Confusion Matrix and Statistics
+ 
+                  Reference
+ Prediction        Iris-setosa Iris-versicolor Iris-virginica
+   Iris-setosa              10               3              0
+   Iris-versicolor           0               7             10
+   Iris-virginica            0               0              0
+ 
+ Overall Statistics
+                                           
+                Accuracy : 0.5667          
+                ... 
+
+ Statistics by Class:
+ 
+                      Class: Iris-setosa Class: Iris-versicolor Class: Iris-virginica
+ Sensitivity                      1.0000                 0.7000                0.0000
+ Specificity                      0.8500                 0.5000                1.0000
+ ...
+\end{lstlisting}
 
 \pagebreak
 
@@ -473,6 +544,20 @@ This is the output generated, from which we can observe that the 192 test istanc
     RMSE      Rsquared   MAE     
     9296.637  0.2369883  7287.627
 \end{lstlisting}
+
+\pagebreak
+
+Of course, an RMSE value is not so immediate to be interpreted, unlike an accuracy value.\\
+To have a better understanding of how the model performs, we can plot the real outputs vs the predicted outputs, for every instance of the test set.\\
+
+We can see that the model is not so precise in its predictions: in this case, it underfits its data.\\
+
+\begin{figure}[H]
+  \centering
+  \hspace*{-0.8in}
+  \includegraphics[scale=0.5]{realY-vs-predY.png}
+  \caption{real outputs vs predicted outputs}
+\end{figure}
 
 \pagebreak
 

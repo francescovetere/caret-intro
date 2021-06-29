@@ -7,7 +7,7 @@ dataset <- read.csv('../datasets/iris-dataset.csv')
 set.seed(100)
 
 # Split data
-trainRowNumbers <- createDataPartition(dataset$Species, p=0.9, list=FALSE)
+trainRowNumbers <- createDataPartition(dataset$Species, p=0.8, list=FALSE)
 trainData <- dataset[trainRowNumbers,]
 testData <- dataset[-trainRowNumbers,]
 
@@ -16,7 +16,7 @@ model <- train(form=Species ~ .,       # outcome ~ predictors
                data=trainData,
                method='mlpML',
                trControl=trainControl(method="repeatedcv", number=10, repeats=10),
-               tuneGrid=expand.grid(layer1=4, layer2=2, layer3=2),
+               tuneGrid=expand.grid(layer1=3, layer2=2, layer3=1),
                trace=FALSE)     # avoids verbose output 
 
 # Predict "Species" attribute for data in testData using the model trained before

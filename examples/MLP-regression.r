@@ -14,11 +14,8 @@ testData <- dataset[-trainRowNumbers,]
 # print(nrow(trainData)) # 771
 # print(nrow(testData))  # 192
 
-trainData <- dataset[trainRowNumbers,]
-testData <- dataset[-trainRowNumbers,]
-
 model = train(form=Car_price ~ .,
-              data=dataset,
+              data=trainData,
               method="mlp",
               preProc=c("center", "scale"), # Preprocessing can be done also here
               trControl=trainControl(method="repeatedcv", number=3, repeats=3),
